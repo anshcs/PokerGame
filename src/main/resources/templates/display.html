@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <title>Poker Game</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <style>
+    body {
+      background-color: #1c1c1c;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    .button-container {
+      margin-top: 50px;
+    }
+
+    .button {
+      display: inline-block;
+      background-color: #4a4a4a;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 20px;
+      margin: 0 10px;
+    }
+
+    .button:hover {
+      background-color: #333333;
+    }
+
+    .card-container {
+      margin-top: 50px;
+    }
+
+    .card {
+      width: 100px;
+      height: 150px;
+      background-color: black;
+      margin: 10px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .rank {
+      font-size: 50px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+    }
+
+    .suit {
+      font-size: 30px;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+    }
+
+    p {
+      font-size: 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Poker Game</h1>
+
+  <div class="button-container">
+    <a class="button" id="Bet"  >Bet</a>
+    <a class="button" id="Check" >Check</a>
+    <a class="button" id="Fold" >Fold</a>
+  </div>
+
+  <div class="card-container">
+    <div class="card">
+      <div class="rank" th:text="${player.card1Value}"></div>
+      <div class="suit" th:text="${player.card1Suit}"></div>
+    </div>
+
+    <div class="card">
+      <div class="rank" th:text="${player.card2Value}"></div>
+      <div class="suit" th:text="${player.card2Suit}"></div>
+    </div>
+  </div>
+
+  <p th:text="'Amount: ' + ${player.amount}" />
+  <p th:text="'Name: ' + ${player.name}" />
+
+  <p>Current pot value: <span id="pot"></span></p>
+  
+  <script>
+
+    var Bet = document.getElementById("Bet");
+    Bet.onclick = function(){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET","/game/bet");
+      xhr.onload = function() {
+        alert("bet placed");
+      };
+      xhr.send();
+    }; 
+
+    var Fold = document.getElementById("Fold");
+    Fold.onclick= function(){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET","/game/fold");
+      xhr.onload =function(){
+        if (xhr.status === 200) {
+          var player_fold = (xhr.responseText);
+          alert(player_fold);
+      }
+      }
+      xhr.send()
+    }
+
+
+    function updatePot() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/game/pot");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var pot = parseInt(xhr.responseText);
+                document.getElementById("pot").innerHTML = pot;
+            }
+        };
+        xhr.send();
+    }
+
+    setInterval(updatePot, 1000); // update pot every second
+
+    
+</script>
+
+
+
+
+
+
+</body>
+
+</html>
