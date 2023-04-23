@@ -14,7 +14,7 @@ public class player {
     public String card2Suit;
     public String card1Value;
     public String card2Value;
-    //isturn 
+    public boolean isturn; 
 
     player() {
         // this.name = name; PRIMARRY KEYS ONLY FOR CONSTRUCTORS 
@@ -29,6 +29,14 @@ public class player {
         this.Amount += amt;
 
     }
+    public boolean isIsturn() {
+        return isturn;
+    }
+
+    public void setIsturn(boolean isturn) {
+        this.isturn = isturn;
+    }
+    
     public int getId() {
         return id;
     }

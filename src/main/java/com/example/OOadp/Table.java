@@ -14,6 +14,10 @@ public class Table {
     String Flop3suit;
     String turnrank;
     String turnsuit;
+    String riverrank;
+    String riversuit;
+
+    
     public String getFlop1rank() {
         return Flop1rank;
     }
@@ -94,8 +98,7 @@ public class Table {
         this.riversuit = riversuit;
     }
 
-    String riverrank;
-    String riversuit;
+    
 
 
     Table(int Pot) {

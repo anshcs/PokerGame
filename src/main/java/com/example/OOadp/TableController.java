@@ -42,6 +42,22 @@ public class TableController {
     public String Flop3suit(){
         return game.table.Flop3suit;
     }
+    @GetMapping("/table/Turnsuit")
+    public String Turnsuit(){
+        return game.table.turnsuit;
+    }
+    @GetMapping("/table/Turnrank")
+    public String Turnrank(){
+        return game.table.turnrank;
+    }
+    @GetMapping("/table/Riversuit")
+    public String Riversuit(){
+        return game.table.riversuit;
+    }
+    @GetMapping("/table/Riverrank")
+    public String Riverrank(){
+        return game.table.riverrank;
+    }
 
 
     // for player cards on table 

@@ -65,6 +65,11 @@
     p {
       font-size: 24px;
     }
+    #TurnBox {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+    }
   </style>
 </head>
 
@@ -89,6 +94,14 @@
       <div class="rank" id = "flop3rank"></span></div>
       <div class="suit" id = "flop3suit"></span></div>
     </div>
+    <div class = "card">
+      <div class="rank" id = "turnrank"></span></div>
+      <div class="suit" id = "turnsuit"></span></div>
+    </div>
+    <div class = "card">
+      <div class="rank" id = "riverrank"></span></div>
+      <div class="suit" id = "riversuit"></span></div>
+    </div>
   </div>
       
 
@@ -104,17 +117,48 @@
     </div>
   </div>
 
+
+
   <div class="button-container">
+    <input type = "text" id = "BetAmt">
     <a class="button" id="Bet"  >Bet</a>
     <a class="button" id="Check" >Check</a>
     <a class="button" id="Fold" >Fold</a>
   </div>
+
+  <div id = "TurnBox">TURN</div>
 
   
 
   <p>Current pot value: <span id="pot"></span></p>
   
   <script>
+    var id = (document.querySelector('[id]').getAttribute('id')).toString();
+    function updatePlayerturn(){
+
+      var id = (document.querySelector('[id]').getAttribute('id')).toString();
+      var checkturn = new XMLHttpRequest();
+      checkturn.open("GET","/game/turn?id="+id)
+      checkturn.onload =function(){
+        if (checkturn.status === 200) {
+          var Playerturn = (checkturn.responseText);
+          var TBox = document.getElementById("TurnBox")
+          if(Playerturn == "true"){
+            TBox.style.backgroundColor = "green";
+          }
+          else{
+            TBox.style.backgroundColor = "red";
+          }
+        }
+      };
+      checkturn.send();
+
+    }
+    setInterval(updatePlayerturn, 1000);
+
+
+
+
 
 
     function updateHoleCards(){
@@ -179,8 +223,12 @@
 
     var Bet = document.getElementById("Bet");
     Bet.onclick = function(){
+      var id = (document.querySelector('[id]').getAttribute('id')).toString();
       var xhr = new XMLHttpRequest();
-      xhr.open("GET","/game/bet");
+      const BetAmount = document.getElementById("BetAmt").value;
+      var base = "/game/bet"
+      url = `${base}?id=${id}&Betamt=${BetAmount}`;
+      xhr.open("GET",url);
       xhr.onload = function() {
         alert("bet placed");
       };
@@ -283,14 +331,61 @@
     }
     setInterval(updateFlop, 1000);
 
+    function updateTurn(){
+
+      
+      var getTurnrank = new XMLHttpRequest();
+      getTurnrank.open("GET", "/table/Turnrank");
+      getTurnrank.onload = function() {
+        if (getTurnrank.status === 200) {
+            var Turnrank = (getTurnrank.responseText);
+            document.getElementById("turnrank").innerHTML = Turnrank;
+        }
+      };
+      getTurnrank.send();
 
 
-    
+      var getTurnsuit = new XMLHttpRequest();
+      getTurnsuit.open("GET", "/table/Turnsuit");
+      getTurnsuit.onload = function() {
+        if (getTurnsuit.status === 200) {
+            var Turnsuit = (getTurnsuit.responseText);
+            document.getElementById("turnsuit").innerHTML = Turnsuit;
+        }
+      };
+      getTurnsuit.send();
+    }
+    setInterval(updateTurn, 1000);
 
-    
 
-    
-</script>
+    function updateRiver(){
+
+      
+      var getRiverrank = new XMLHttpRequest();
+      getRiverrank.open("GET", "/table/Riverrank");
+      getRiverrank.onload = function() {
+        if (getRiverrank.status === 200) {
+            var Riverrank = (getRiverrank.responseText);
+            document.getElementById("riverrank").innerHTML = Riverrank;
+        }
+      };
+      getRiverrank.send();
+
+
+      var getRiversuit = new XMLHttpRequest();
+      getRiversuit.open("GET", "/table/Riversuit");
+      getRiversuit.onload = function() {
+        if (getRiversuit.status === 200) {
+            var Riversuit = (getRiversuit.responseText);
+            document.getElementById("riversuit").innerHTML = Riversuit;
+        }
+      };
+      getRiversuit.send();
+    }
+    setInterval(updateRiver, 1000);
+
+
+  </script>
 
 
 

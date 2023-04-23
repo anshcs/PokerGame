@@ -79,8 +79,13 @@ public class Pokesh {
         // Scanner sc = new Scanner(System.in);
         boolean isBetting;
         for (player p : Players) {
-            isBetting = true;
-            while (isBetting) { // checks whether a player has finished placing his bets
+            // isBetting = true;
+            p.setIsturn(true);
+            while (p.isturn) { 
+
+                
+                
+                // checks whether a player has finished placing his bets
                 // The choice part can be shown contineously on the screen, if player turn is
                 // true he can access and use the choices , for each choice create mapping that
                 // alters the pot value or player playing r not for fold condn
@@ -88,64 +93,64 @@ public class Pokesh {
                 // loop ends and the next players isturn is true and repeat
                 // also cotineously show the table cards so after every ettinng round how pot
                 // gets updated evey second update table cards
-                if (p.isPlaying) { // checks wehter player is playing or not
-                    String ans;
-                    System.out.println("would you like to place a bet? " + p.name + "\ny/n");
-                    ans = sc.next();
-                    System.out.println(ans);
-                    // String ans = "yes";
-                    if (ans.equals("y")) {
-                        System.out.println("how much would you list to bet? " + p.name + "\nCurrent bet :" + currentBet
-                                + " 1:Call 2:Raise 3:Custom 4:Check"); // can place same amount as current bet or can
-                                                                       // raise if
-                        // raised then the previous players have to match raised
-                        // amount that functionality must be added must add
-                        // check functionality also
-                        int choice = sc.nextInt();
-                        if (choice == 1) {
-                            int amt = p.Bet(currentBet);
-                            t.addPot(amt);
-                            if (amt > currentBet)
-                                currentBet = amt;
-                            {
-                            }
+                // if (p.isPlaying) { // checks wehter player is playing or not
+                //     String ans;
+                //     System.out.println("would you like to place a bet? " + p.name + "\ny/n");
+                //     ans = sc.next();
+                //     System.out.println(ans);
+                //     // String ans = "yes";
+                //     if (ans.equals("y")) {
+                //         System.out.println("how much would you list to bet? " + p.name + "\nCurrent bet :" + currentBet
+                //                 + " 1:Call 2:Raise 3:Custom 4:Check"); // can place same amount as current bet or can
+                //                                                        // raise if
+                //         // raised then the previous players have to match raised
+                //         // amount that functionality must be added must add
+                //         // check functionality also
+                //         int choice = sc.nextInt();
+                //         if (choice == 1) {
+                //             int amt = p.Bet(currentBet);
+                //             t.addPot(amt);
+                //             if (amt > currentBet)
+                //                 currentBet = amt;
+                //             {
+                //             }
 
-                            isBetting = false;
-                        } else if (choice == 2) {
-                            int amt = p.Bet(currentBet * RiseMultiple);
-                            t.addPot(amt);
-                            if (amt > currentBet) {
-                                currentBet = amt;
-                            }
+                //             isBetting = false;
+                //         } else if (choice == 2) {
+                //             int amt = p.Bet(currentBet * RiseMultiple);
+                //             t.addPot(amt);
+                //             if (amt > currentBet) {
+                //                 currentBet = amt;
+                //             }
 
-                            isBetting = false;
-                        } else if (choice == 3) {
-                            System.out.println("How much would you like to bet " + "Current bet : " + currentBet);
-                            int amt = sc.nextInt();
-                            if (amt > currentBet * RiseMultiple) {
-                                t.addPot(p.Bet(amt));
-                                if (amt > currentBet) {
-                                    currentBet = amt;
-                                }
-                                isBetting = false;
-                            } else {
-                                System.out.println("enter amount greater than : " + currentBet * RiseMultiple);
-                            }
+                //             isBetting = false;
+                //         } else if (choice == 3) {
+                //             System.out.println("How much would you like to bet " + "Current bet : " + currentBet);
+                //             int amt = sc.nextInt();
+                //             if (amt > currentBet * RiseMultiple) {
+                //                 t.addPot(p.Bet(amt));
+                //                 if (amt > currentBet) {
+                //                     currentBet = amt;
+                //                 }
+                //                 isBetting = false;
+                //             } else {
+                //                 System.out.println("enter amount greater than : " + currentBet * RiseMultiple);
+                //             }
 
-                        } else if (choice == 4) {
-                            isBetting = false;
+                //         } else if (choice == 4) {
+                //             isBetting = false;
 
-                        }
-                    } else if (ans.equals("n")) {
-                        p.fold();
-                        isBetting = false;
-                        // player chooses to not bet that round and folds
-                    }
+                //         }
+                //     } else if (ans.equals("n")) {
+                //         p.fold();
+                //         isBetting = false;
+                //         // player chooses to not bet that round and folds
+                //     }
 
-                } else {
-                    isBetting = false;
-                    // p.isPlaying = false;
-                }
+                // } else {
+                //     isBetting = false;
+                //     // p.isPlaying = false;
+                // }
             }
             displayPot(t); // displays pot after every round of betting
 
@@ -191,6 +196,8 @@ public class Pokesh {
     void Turn(Table table, Dealer dealer) {
         dealer.Burn();
         dealer.Deal(table.table_Deck);
+        table.setTurnrank(table.table_Deck.get(3).value);
+        table.setTurnsuit(table.table_Deck.get(3).suit);
         showTurn(table);
     }
 
@@ -201,6 +208,8 @@ public class Pokesh {
     void River(Table table, Dealer dealer) {
         dealer.Burn();
         dealer.Deal(table.table_Deck);
+        table.setRiverrank(table.table_Deck.get(4).value);
+        table.setRiversuit(table.table_Deck.get(4).suit);
         showTurn(table);
     }
 
@@ -218,12 +227,12 @@ public class Pokesh {
         // game1.dealer.dealer_Deck.get(i).suit + "\n");
         // }
         this.HoleCards(this.Players, this.dealer);
-        // this.PlaceBet(this.Players, this.table);
+        this.PlaceBet(this.Players, this.table);
         this.Flop(this.table, this.dealer);
         // this.PlaceBet(this.Players, this.table);
-        // this.Turn(this.table, this.dealer);
+        this.Turn(this.table, this.dealer);
         // this.PlaceBet(this.Players, this.table);
-        // this.River(this.table, this.dealer);
+        this.River(this.table, this.dealer);
         // this.PlaceBet(this.Players, this.table);
 
         // for (int i = 0; i < game1.dealer.dealer_Deck.size(); i++) {
