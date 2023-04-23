@@ -76,10 +76,13 @@
 <body>
   <h1>Poker Game</h1>
 
-  <p  th:text="'Amount: ' + ${player.amount}" />
-  <p  th:text="'Name: ' + ${player.name}" />
+  
   <p  th:text="'id: ' + ${player.id}" />
   <div  th:attr ="id=${player.id}"></div>
+  
+  <p  th:text="'Name: ' + ${player.name}" />
+  
+  <p>Current Amount : <span id="amt"></span></p>
 
   <div class="card-container">
     <div class = "card">
@@ -133,6 +136,22 @@
   <p>Current pot value: <span id="pot"></span></p>
   
   <script>
+
+    function updatePlayerAmount(){
+      var id = (document.querySelector('[id]').getAttribute('id')).toString();
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET","/game/amount?id="+id);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+            var a = parseInt(xhr.responseText);
+            document.getElementById("amt").innerHTML = a;
+        }
+    };
+    xhr.send();
+
+    }
+    setInterval(updatePlayerAmount, 1000);
+
     var id = (document.querySelector('[id]').getAttribute('id')).toString();
     function updatePlayerturn(){
 
@@ -250,15 +269,15 @@
 
 
     function updatePot() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/game/pot");
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var pot = parseInt(xhr.responseText);
+        var getamt = new XMLHttpRequest();
+        getamt.open("GET", "/game/pot");
+        getamt.onload = function() {
+            if (getamt.status === 200) {
+                var pot = parseInt(getamt.responseText);
                 document.getElementById("pot").innerHTML = pot;
             }
         };
-        xhr.send();
+        getamt.send();
     }
 
     setInterval(updatePot, 1000); // update pot every second

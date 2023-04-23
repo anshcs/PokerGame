@@ -47,8 +47,15 @@ public class GameController {
             return "true";
         }
         else{return "false";}
+    }
 
-        
+    @GetMapping("/game/amount")
+    public String ShowAmount(@RequestParam String id){
+        int i = Integer.parseInt(id);
+        String amount = Integer.toString(game.Players.get(i).Amount);
+        return amount;
+
+
     }
 
     
