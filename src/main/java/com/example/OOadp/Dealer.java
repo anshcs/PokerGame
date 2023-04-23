@@ -31,7 +31,11 @@ public class Dealer {
     void Deal(ArrayList<card> d) {
         card c = dealer_Deck.get(dealer_Deck.size() - 1);
         dealer_Deck.remove(dealer_Deck.size() - 1);
-        d.add(c);// must include as dealer will directly deal cards to a deck
+        d.add(c);
+        // return c ;
+        
+
+        // must include as dealer will directly deal cards to a deck
         // return c; // temp return card to see if the dealing feature is working
     }
 

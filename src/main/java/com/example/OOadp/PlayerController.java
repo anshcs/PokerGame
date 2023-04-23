@@ -20,6 +20,7 @@ public class PlayerController {
     List<player> PlayerList = new ArrayList<player>();
     @Autowired
     Pokesh game;
+    int i = 0;
 
     @Autowired
     private JdbcTemplate JdbcTemplate;
@@ -27,32 +28,53 @@ public class PlayerController {
     @GetMapping("/")
     public String greetingForm(Model model) {
         model.addAttribute("player", new player());
+        // player comp = new player();
+        // PlayerList.add(comp);
         return "Login";
     }
 
     @PostMapping("/")
     public String greetingSubmit(@ModelAttribute player player, Model model) {
-        PlayerList.add(player);
-        player comp = new player();
-        PlayerList.add(comp);
+
+        if (PlayerList.size() == 2){
+            GameThread myThread = new GameThread();
+            Thread thread = new Thread( myThread);
+            thread.start();
+        }
+
+        else if(PlayerList.size() > 2){
+            return "tableFull";
+        }
         
+        PlayerList.add(player);
+        
+        player.setId(i);
+        i = i+ 1;
         // Pokesh game = new Pokesh(2);
         game.setPlayers(PlayerList);
-        game.setNo_players(2);
+        game.setNo_players(PlayerList.size());
         // game
-        game.StartGame();
+        // game.StartGame();
         model.addAttribute("player", player);
 
-        return "display";
-    }
+        
+        // should display the cards on table contineously
+        // when another tab is opened then it deals more cards and has a new player some
+        // how have to figure out how to pass other player as para for fold
+        //  pot value keeps changing as the game is a component and shows all the time 
 
-    @GetMapping("/startgame")
-    public String CheckStart(@RequestParam("p") String p,Model model) {
-        System.out.println(p);
-        player player = new player();
-        player.setName(p);
-        model.addAttribute("player", player);
-        return "startgame";
+        return "trialDisplay";
     }
+    public class  GameThread implements Runnable{
+
+        @Override
+        public void run(){
+
+            game.StartGame();
+
+        }
+
+    }
+    
 
 }

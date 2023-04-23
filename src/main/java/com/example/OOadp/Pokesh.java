@@ -168,10 +168,19 @@ public class Pokesh {
     }
 
     void Flop(Table table, Dealer dealer) {
+        
+
         dealer.Burn();
+
         for (int i = 0; i < 3; i++) {
             dealer.Deal(table.table_Deck);
         }
+        table.setFlop1rank(table.table_Deck.get(0).value);
+        table.setFlop1suit(table.table_Deck.get(0).suit);
+        table.setFlop2rank(table.table_Deck.get(1).value);
+        table.setFlop2suit(table.table_Deck.get(1).suit);
+        table.setFlop3rank(table.table_Deck.get(2).value);
+        table.setFlop3suit(table.table_Deck.get(2).suit);
         showFlop(table);
     }
 
@@ -210,7 +219,7 @@ public class Pokesh {
         // }
         this.HoleCards(this.Players, this.dealer);
         // this.PlaceBet(this.Players, this.table);
-        // this.Flop(this.table, this.dealer);
+        this.Flop(this.table, this.dealer);
         // this.PlaceBet(this.Players, this.table);
         // this.Turn(this.table, this.dealer);
         // this.PlaceBet(this.Players, this.table);

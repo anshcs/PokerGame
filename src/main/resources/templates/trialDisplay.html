@@ -70,10 +70,11 @@
 
 <body>
   <h1>Poker Game</h1>
-  
-  <p th:text="'Amount: ' + ${player.amount}" />
-  <p th:text="'Name: ' + ${player.name}" />
-  
+
+  <p  th:text="'Amount: ' + ${player.amount}" />
+  <p  th:text="'Name: ' + ${player.name}" />
+  <p  th:text="'id: ' + ${player.id}" />
+  <div  th:attr ="id=${player.id}"></div>
 
   <div class="card-container">
     <div class = "card">
@@ -93,13 +94,13 @@
 
   <div class="card-container">
     <div class="card">
-      <div class="rank" th:text="${player.card1Value}"></div>
-      <div class="suit" th:text="${player.card1Suit}"></div>
+      <div class="rank" id = "card1Value"></div>
+      <div class="suit" id = "card1Suit"></div>
     </div>
 
     <div class="card">
-      <div class="rank" th:text="${player.card2Value}"></div>
-      <div class="suit" th:text="${player.card2Suit}"></div>
+      <div class="rank" id = "card2Value"></div>
+      <div class="suit" id = "card2Suit"></div>
     </div>
   </div>
 
@@ -116,9 +117,61 @@
   <script>
 
 
+    function updateHoleCards(){
+
+      var id = (document.querySelector('[id]').getAttribute('id')).toString();
+      
+
+      var getholecard1rank = new XMLHttpRequest();
+      
+      getholecard1rank.open("GET", "/player/Hole1rank?id="+id);
+      getholecard1rank.onload = function() {
+        if (getholecard1rank.status === 200) {
+            var card1Value = (getholecard1rank.responseText);
+            document.getElementById("card1Value").innerHTML = card1Value;
+        }
+      };
+      getholecard1rank.send();
+
+      var getholecard2rank = new XMLHttpRequest();
+      
+      getholecard2rank.open("GET", "/player/Hole2rank?id="+id );
+      getholecard2rank.onload = function() {
+        if (getholecard1rank.status === 200) {
+            var card2Value = (getholecard2rank.responseText);
+            document.getElementById("card2Value").innerHTML = card2Value;
+        }
+      };
+      getholecard2rank.send();
+
+      var getholecard1suit = new XMLHttpRequest();
+      
+      getholecard1suit.open("GET", "/player/Hole1suit?id="+id );
+      getholecard1suit.onload = function() {
+        if (getholecard1suit.status === 200) {
+            var card1suit = (getholecard1suit.responseText);
+            document.getElementById("card1Suit").innerHTML = card1suit;
+        }
+      };
+      getholecard1suit.send();
+
+      var getholecard2suit = new XMLHttpRequest();
+      
+      getholecard2suit.open("GET", "/player/Hole2suit?id="+id );
+      getholecard2suit.onload = function() {
+        if (getholecard2suit.status === 200) {
+            var card2suit = (getholecard2suit.responseText);
+            document.getElementById("card2Suit").innerHTML = card2suit;
+        }
+      };
+      getholecard2suit.send();
+
+    }
+    setInterval(updateHoleCards, 1000);
+
     
 
-
+    alert(document.querySelector('[id]').getAttribute('id'));
 
 
 
@@ -229,6 +282,8 @@
 
     }
     setInterval(updateFlop, 1000);
+
+
 
     
 

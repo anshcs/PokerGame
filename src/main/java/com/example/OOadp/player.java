@@ -5,6 +5,7 @@ import java.util.*;
 public class player {
 
     public int Amount;
+    public int id;
     public boolean isPlaying;
     public String name;
     public ArrayList<card> Hand = new ArrayList<card>();
@@ -28,7 +29,13 @@ public class player {
         this.Amount += amt;
 
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getAmount() {
         return Amount;
     }
