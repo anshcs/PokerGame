@@ -36,13 +36,13 @@ public class PlayerController {
     @PostMapping("/")
     public String greetingSubmit(@ModelAttribute player player, Model model) {
 
-        if (PlayerList.size() == 2){
+        if (PlayerList.size() == 1){
             GameThread myThread = new GameThread();
             Thread thread = new Thread( myThread);
             thread.start();
         }
 
-        else if(PlayerList.size() > 2){
+        else if(PlayerList.size() > 1){
             return "tableFull";
         }
         

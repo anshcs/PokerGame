@@ -24,12 +24,30 @@ public class GameController {
     }
 
     @GetMapping("/game/bet")
-    public void PlacedBet(@RequestParam String id,@RequestParam String Betamt){
+    public String PlacedBet(@RequestParam String id,@RequestParam String Betamt){
         int i = Integer.parseInt(id);
         // game.Players.get(i);
         int BetAmount =  Integer.parseInt(Betamt);
-        game.Players.get(i).setIsturn(false);
-        game.table.Pot = game.table.Pot + game.Players.get(i).Bet(BetAmount);
+        if(game.Players.get(i).isturn){
+            if (BetAmount>game.table.MinBet){
+                System.out.println(game.Players.get(i).name + "isturn : "+ game.Players.get(i).isturn );
+                game.Players.get(i).setIsturn(false);
+                game.table.MinBet = BetAmount;
+                game.table.Pot = game.table.Pot + game.Players.get(i).Bet(BetAmount);
+                System.out.println(game.Players.get(i).name + "isturn : "+ game.Players.get(i).isturn );
+                game.Players.get(i).setIsturn(false);
+                return "true";
+            }
+            else{
+                System.out.println(game.Players.get(i).name + "isturn1 : "+ game.Players.get(i).isturn );
+                return "false";
+            }
+        }
+        else{
+            System.out.println(game.Players.get(i).name + "isturn2 : not his chance  "+ game.Players.get(i).isturn );
+            return "not";
+        }
+        
     }
 
     @GetMapping("/game/fold")
@@ -46,7 +64,9 @@ public class GameController {
         if (game.Players.get(i).isturn){
             return "true";
         }
-        else{return "false";}
+        else{
+            return "false";
+    }
     }
 
     @GetMapping("/game/amount")
@@ -56,6 +76,12 @@ public class GameController {
         return amount;
 
 
+    }
+
+    @GetMapping("/game/minbet")
+    public String ShowMinBet(){
+        String minbet = Integer.toString(game.table.MinBet);
+        return minbet;
     }
 
     

@@ -6,6 +6,7 @@ public class Table {
 
     ArrayList<card> table_Deck = new ArrayList<card>();
     int Pot;
+    int MinBet;
     String Flop1rank ;
     String Flop1suit;
     String Flop2rank ;
@@ -18,6 +19,14 @@ public class Table {
     String riversuit;
 
     
+    public int getMinBet() {
+        return MinBet;
+    }
+
+    public void setMinBet(int minBet) {
+        MinBet = minBet;
+    }
+
     public String getFlop1rank() {
         return Flop1rank;
     }

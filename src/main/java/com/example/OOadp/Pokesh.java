@@ -83,6 +83,14 @@ public class Pokesh {
             p.setIsturn(true);
             while (p.isturn) { 
 
+                System.out.println(p.name +" turn " + p.isturn);
+                // try {
+                //     wait(2000);
+                // } catch (InterruptedException e) {
+                //     // TODO Auto-generated catch block
+                //     e.printStackTrace();
+                // }
+
                 
                 
                 // checks whether a player has finished placing his bets
@@ -152,6 +160,7 @@ public class Pokesh {
                 //     // p.isPlaying = false;
                 // }
             }
+            System.out.println(p.name + " turn : " + p.isturn + "should have ended ");
             displayPot(t); // displays pot after every round of betting
 
         }
@@ -229,11 +238,11 @@ public class Pokesh {
         this.HoleCards(this.Players, this.dealer);
         this.PlaceBet(this.Players, this.table);
         this.Flop(this.table, this.dealer);
-        // this.PlaceBet(this.Players, this.table);
+        this.PlaceBet(this.Players, this.table);
         this.Turn(this.table, this.dealer);
-        // this.PlaceBet(this.Players, this.table);
+        this.PlaceBet(this.Players, this.table);
         this.River(this.table, this.dealer);
-        // this.PlaceBet(this.Players, this.table);
+        this.PlaceBet(this.Players, this.table);
 
         // for (int i = 0; i < game1.dealer.dealer_Deck.size(); i++) {
         // System.out.println(

@@ -130,9 +130,10 @@
   </div>
 
   <div id = "TurnBox">TURN</div>
-
   
 
+  
+  <p>Current Minimum Bet : <span id="MinBet"></span></p>
   <p>Current pot value: <span id="pot"></span></p>
   
   <script>
@@ -165,7 +166,7 @@
           if(Playerturn == "true"){
             TBox.style.backgroundColor = "green";
           }
-          else{
+          else if (Playerturn == "false"){
             TBox.style.backgroundColor = "red";
           }
         }
@@ -245,12 +246,25 @@
       var id = (document.querySelector('[id]').getAttribute('id')).toString();
       var xhr = new XMLHttpRequest();
       const BetAmount = document.getElementById("BetAmt").value;
+
       var base = "/game/bet"
       url = `${base}?id=${id}&Betamt=${BetAmount}`;
       xhr.open("GET",url);
       xhr.onload = function() {
-        alert("bet placed");
+        if (xhr.status === 200) {
+          var min = (xhr.responseText);
+          if(min=="true"){
+            alert("bet placed");
+          }
+          else if(min=="not"){
+            alert("Please wait for your turn!!");
+          }
+          else{
+            alert("Please enter amount greater than Minimum Bet!");
+          }
+      }
       };
+      
       xhr.send();
     }; 
 
@@ -281,6 +295,20 @@
     }
 
     setInterval(updatePot, 1000); // update pot every second
+    
+    function ShowMinBet() {
+      var minbet = new XMLHttpRequest();
+      minbet.open("GET", "/game/minbet");
+      minbet.onload = function() {
+          if (minbet.status === 200) {
+              var mb = parseInt(minbet.responseText);
+              document.getElementById("MinBet").innerHTML = mb;
+          }
+      };
+      minbet.send();
+  }
+
+  setInterval(ShowMinBet, 1000);
 
     function updateFlop(){
 
