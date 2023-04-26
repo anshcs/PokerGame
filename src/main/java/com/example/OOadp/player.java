@@ -94,6 +94,7 @@ public class player {
     void fold() {
         // player must quit the current round
         isPlaying = false;
+        this.setIsturn(false);
         System.out.println("player : " + name + " has folded ");
     }
 

@@ -51,9 +51,11 @@ public class GameController {
     }
 
     @GetMapping("/game/fold")
-    public String PlayerFold(){
-       player  p = game.Players.get(0);
-        return p.getName();
+    public String PlayerFold(@RequestParam String id){
+    //    game.Players.get(0);
+        int i = Integer.parseInt(id);
+        game.Players.get(i).fold();
+        return game.Players.get(i).name;
     }
 
     @GetMapping("/game/turn")
@@ -84,7 +86,13 @@ public class GameController {
         return minbet;
     }
 
-    
+    @GetMapping("/game/winner")
+    public String GetWinner(){
+        if (game.Winner!= null){
+            return game.Winner.name;
+        }
+        else {return "no";}
+    }
 
 
 

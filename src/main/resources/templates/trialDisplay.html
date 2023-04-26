@@ -125,7 +125,7 @@
   <div class="button-container">
     <input type = "text" id = "BetAmt">
     <a class="button" id="Bet"  >Bet</a>
-    <a class="button" id="Check" >Check</a>
+    
     <a class="button" id="Fold" >Fold</a>
   </div>
 
@@ -137,6 +137,25 @@
   <p>Current pot value: <span id="pot"></span></p>
   
   <script>
+
+
+    function getWinner(){
+      var win = new XMLHttpRequest();
+      win.open("GET","/game/winner");
+      win.onload = function(){
+        if (win.status == 200 ){
+          var winner = win.responseText;
+          if (winner = "no"){
+
+          }
+          else{
+            alert("winner"+winner);
+          }
+        }
+      }
+      win.send();
+    }
+    setInterval(getWinner,1000);
 
     function updatePlayerAmount(){
       var id = (document.querySelector('[id]').getAttribute('id')).toString();
@@ -270,15 +289,16 @@
 
     var Fold = document.getElementById("Fold");
     Fold.onclick= function(){
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET","/game/fold");
-      xhr.onload =function(){
-        if (xhr.status === 200) {
-          var player_fold = (xhr.responseText);
-          alert(player_fold);
+      var id = (document.querySelector('[id]').getAttribute('id')).toString();
+      var foldesh = new XMLHttpRequest();
+      foldesh.open("GET","/game/fold?id=" + id);
+      foldesh.onload =function(){
+        if (foldesh.status === 200) {
+          var player_fold = (foldesh.responseText);
+          alert("Player :  "+player_fold+ " has folded ");
       }
       }
-      xhr.send()
+      foldesh.send()
     }
 
 
